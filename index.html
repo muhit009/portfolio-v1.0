@@ -6,12 +6,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Portfolio</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <style>
+    #typed-output {
+      font-family: Arial, sans-serif;
+      font-size: 36px;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
 </head>
 <body>
     <header>
         <nav>
             <div class="logo">
-                <a href="#home">Abdullah</a>
+                <a href="#home"></a>
             </div>
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
@@ -30,21 +41,47 @@
         </nav>
     </header>
     
-
+    <section id="home" class="hero">
+        <div class="home-image">
+            <div class="hero-content">
+                <h1 id="typed-output"></h1>
+                <p>
+                    Master's student at <b>VIRGINIA TECH</b>, specializing in Machine Learning and Data Analysis. Driven by a passion for turning complex data into actionable insights and building intelligent systems that make a difference.                </p>
+                <a href="#about" class="cta-button">Learn More About Me</a>
+            </div>
+        </div>
+    </section>      
+<!--       
   <section id="home" class="hero">
-    <div class="hero-content">
-      <h1>Hi, I'm Abdullah Al Muhit</h1>
-      <p>A Master of Engineering student specializing in Machine Learning and Software Engineering, ready to tackle complex challenges and innovate solutions.</p>
-      <a href="#about" class="cta-button">Learn More About Me</a>
+    <div class="home-image">
+        <img src="./img/muhit_bg.png" alt="Abdullah Al Muhit Profile Picture">
+    
+        <div class="hero-content">
+            <h1 id="typed-output"></h1>
+            <p>A Master of Engineering student specializing in Machine Learning and Software Engineering, ready to tackle complex challenges and innovate solutions.</p>
+            <a href="#about" class="cta-button">Learn More About Me</a>
+        </div>
     </div>
   </section>
-  
+   -->
 
   <section id="about">
     <div class="about-container">
         <div class="about-image">
-            <img src="unnamed.png" alt="Abdullah Al Muhit Profile Picture" class="profile-pic">
+            <img src="amiMuhit.png" alt="Abdullah Al Muhit Profile Picture" class="profile-pic">
+            <div class="social-links">
+                <a href="https://linkedin.com/in/abdullah-al-muhit-5b4a89215" target="_blank" aria-label="LinkedIn">
+                    <img src="icons/LinkedIn_icon.svg.png" alt="LinkedIn">
+                </a>
+                <a href="https://github.com/muhit009" target="_blank" aria-label="GitHub">
+                    <img src="icons/GitHub.png" alt="GitHub">
+                </a>
+                <a href="https://www.facebook.com/muhit009/" target="_blank" aria-label="Facebook">
+                    <img src="icons/Facebook_logo.png" alt="Facebook">
+                </a>
+            </div> 
         </div>
+        
         <div class="about-details">
             <h2>About Me</h2>
             <p>
@@ -72,7 +109,7 @@
             <div class="timeline-content">
                 <h3>Virginia Tech</h3>
                 <p><strong>Master of Engineering in Computer Science and Applications</strong></p>
-                <p><em>August 2024 – May 2026</em></p>
+                <p><em>August 2024 – Present</em></p>
                 <ul class="details">
                     <li><strong>Relevant Coursework:</strong> Machine Learning, Information Visualization, Software Engineering</li>
                     <li>Collaborated on machine learning projects focused on predictive modeling.</li>
@@ -131,6 +168,8 @@
                 <li>Django</li>
                 <li>Django REST Framework</li>
                 <li>Scikit-Learn</li>
+                <li>Tensorflow</li>
+                <li>PyTorch</li>
             </ul>
         </div>
         <div class="skill-category">
@@ -138,8 +177,7 @@
             <ul>
                 <li>Tableau</li>
                 <li>Dash</li>
-                <li>NumPy</li>
-                <li>Pandas</li>
+                <li>Plotly</li>
                 <li>Matplotlib</li>
             </ul>
         </div>
@@ -147,6 +185,7 @@
             <h3>Machine Learning</h3>
             <ul>
                 <li>Data Preprocessing</li>
+                <li>Feature Engineering</li>
                 <li>Model Development</li>
             </ul>
         </div>
@@ -156,6 +195,8 @@
                 <li>Leadership</li>
                 <li>Communication</li>
                 <li>Adaptability</li>
+                <li>Latex</li>
+                <li>GitHub</li>
             </ul>
         </div>
     </div>
@@ -205,7 +246,7 @@
 
 <section id="contact">
     <h2>Contact Me</h2>
-    <p>Feel free to reach out via email, phone, or visit me at my location. I’d love to connect with you!</p>
+    <p><b>I'd love to connect with you! </b> </p>
     <div class="contact-details">
         <div class="contact-item">
             <i class="fas fa-envelope"></i>
@@ -222,22 +263,12 @@
             <p>Address:</p>
             <span>Alexandria, VA 22305, USA</span>
         </div>
-        <div class="social-links">
-            <a href="https://linkedin.com/in/abdullah-al-muhit-5b4a89215" target="_blank" aria-label="LinkedIn">
-                <img src="icons/LinkedIn_icon.svg.png" alt="LinkedIn">
-            </a>
-            <a href="https://github.com/muhit009" target="_blank" aria-label="GitHub">
-                <img src="icons/GitHub.png" alt="GitHub">
-            </a>
-            <a href="https://www.facebook.com/muhit009/" target="_blank" aria-label="Facebook">
-                <img src="icons/Facebook_logo.png" alt="Facebook">
-            </a>
-        </div>
+        
     </div>
     <div class="map">
         <iframe 
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.8354345097314!2d-77.05063618468118!3d38.805109079578655!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89b7b2d585d7a7e1%3A0x2f616cd8ec2874d9!2sAlexandria%2C%20VA%2022305%2C%20USA!5e0!3m2!1sen!2sus!4v1688827583408!5m2!1sen!2sus" 
-            width="600" 
+            width="300" 
             height="450" 
             style="border:0;" 
             allowfullscreen="" 
@@ -252,7 +283,14 @@
   </footer>
 
 
-
+  <script>
+    new Typed('#typed-output', {
+      strings: ["Hi, I'm Abdullah Al Muhit"],
+      typeSpeed: 50,
+      backSpeed: 30,
+      loop: true,
+    });
+  </script>
 
   
 </body>
