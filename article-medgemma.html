@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedGemma Clinical Suite — Abdullah Al Muhit</title>
+  <meta name="description" content="How I built a full-stack medical AI platform using FastAPI, Supabase, and fine-tuned MedGemma for clinical chest X-ray analysis.">
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root, [data-theme="dark"] {
+      --bg-dark: #0b0d17;
+      --bg-card: #131627;
+      --accent: #b794f6;
+      --accent-secondary: #7c3aed;
+      --text-primary: #e2e8f0;
+      --text-secondary: #94a3b8;
+      --border-color: rgba(183, 148, 246, 0.12);
+      --glass-bg: rgba(19, 22, 39, 0.6);
+      --glass-border: rgba(183, 148, 246, 0.08);
+      --code-bg: #1a1e35;
+      --font-body: 'Space Grotesk', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    [data-theme="light"] {
+      --bg-dark: #f8f9fc;
+      --bg-card: #ffffff;
+      --accent: #7c3aed;
+      --accent-secondary: #6d28d9;
+      --text-primary: #1e1b4b;
+      --text-secondary: #64748b;
+      --border-color: rgba(124, 58, 237, 0.15);
+      --glass-bg: rgba(255, 255, 255, 0.7);
+      --glass-border: rgba(124, 58, 237, 0.12);
+      --code-bg: #f1f0ff;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .article-container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent);
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      margin-bottom: 40px;
+      transition: opacity 0.3s;
+    }
+    .back-link:hover { opacity: 0.7; }
+
+    .article-meta {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    .article-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 16px;
+    }
+
+    .article-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin-bottom: 36px;
+      line-height: 1.6;
+    }
+
+    .article-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 40px;
+    }
+    .article-tags span {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+      color: var(--accent);
+      background: var(--glass-bg);
+    }
+
+    .article-body h2 {
+      font-size: 1.4rem;
+      margin: 40px 0 16px;
+      color: var(--accent);
+    }
+
+    .article-body h3 {
+      font-size: 1.15rem;
+      margin: 28px 0 12px;
+    }
+
+    .article-body p {
+      margin-bottom: 18px;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .article-body ul, .article-body ol {
+      margin: 0 0 18px 20px;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+    .article-body li { margin-bottom: 8px; }
+
+    .article-body code {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      background: var(--code-bg);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .article-body pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px;
+      overflow-x: auto;
+      margin-bottom: 20px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    .callout {
+      background: var(--glass-bg);
+      border-left: 3px solid var(--accent);
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 24px 0;
+    }
+    .callout p { margin-bottom: 0; }
+
+    .article-footer {
+      margin-top: 60px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .article-footer a {
+      color: var(--accent);
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .article-footer a:hover { opacity: 0.7; }
+
+    @media (max-width: 600px) {
+      .article-title { font-size: 1.6rem; }
+      .article-container { padding: 40px 16px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="article-container">
+  <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Portfolio</a>
+
+  <div class="article-meta">PROJECT DEEP DIVE &mdash; 2025</div>
+  <h1 class="article-title">Building a Production Medical AI Platform with FastAPI</h1>
+  <p class="article-subtitle">How I designed and built MedGemma Clinical Suite — a full-stack platform that lets physicians analyze temporal chest X-rays with AI-powered diagnostic assistance using a fine-tuned MedGemma model.</p>
+
+  <div class="article-tags">
+    <span>FastAPI</span>
+    <span>Supabase</span>
+    <span>MedGemma</span>
+    <span>Next.js</span>
+    <span>PostgreSQL</span>
+    <span>LoRA</span>
+    <span>Docker</span>
+  </div>
+
+  <div class="article-body">
+
+    <h2>The Problem</h2>
+    <p>Radiologists and physicians routinely compare chest X-rays over time to track disease progression. This process is manual, time-intensive, and lacks AI decision support that understands the temporal context of imaging. I wanted to build a platform that brings medical-domain AI directly into the clinical workflow — not as a black box, but as a contextual assistant that understands patient history, vitals, and imaging timelines.</p>
+
+    <h2>Architecture Overview</h2>
+    <p>The system follows a three-tier architecture designed for flexibility between local development and cloud deployment:</p>
+    <pre>
+Frontend (Next.js 16 / React 19)
+    │
+    ▼  REST API
+Backend (FastAPI / Python)
+    │
+    ├── Supabase (PostgreSQL + Storage)
+    │       └── Patients, Vitals, Imaging, Conversations
+    │
+    └── Model Server (MedGemma-4B-IT + LoRA)
+            └── RunPod Serverless or Local GPU</pre>
+
+    <h3>Frontend</h3>
+    <p>Built with <code>Next.js 16</code> and <code>React 19</code>, the UI is a dual-pane clinical dashboard. The left panel shows patient demographics, vitals (heart rate, SpO2, blood pressure), editable clinical alerts, and imaging history. The right panel is a real-time AI chat interface with streaming responses. Physicians can select multiple X-ray images to provide temporal context for the AI analysis.</p>
+
+    <h3>Backend API</h3>
+    <p>The FastAPI backend handles patient management, clinical data CRUD, imaging workflows, and AI orchestration. Authentication uses JWT (HS256) with <code>bcrypt</code> password hashing. Every AI conversation is persisted to Supabase for a complete audit trail — critical for any healthcare application.</p>
+
+    <h3>AI/ML Layer</h3>
+    <p>The core of the system is Google's <code>MedGemma-4B-IT</code> model, fine-tuned with a custom LoRA adapter (<code>MedGemma-TI</code>) for temporal chest X-ray analysis. I used <strong>4-bit quantization (nf4)</strong> via bitsandbytes to reduce the memory footprint from ~11GB to ~4GB, making it deployable on consumer GPUs (RTX 3060 Ti 8GB minimum).</p>
+
+    <h2>Key Technical Decisions</h2>
+
+    <h3>Why LoRA Instead of Full Fine-Tuning?</h3>
+    <p>With a 4B-parameter model, full fine-tuning would require massive compute and risk catastrophic forgetting of the model's medical knowledge. LoRA lets me adapt the model for temporal imaging analysis while preserving its broad medical understanding — all with a fraction of the compute cost.</p>
+
+    <h3>Flexible Inference Strategy</h3>
+    <p>I implemented a three-mode inference system to support different deployment scenarios:</p>
+    <ul>
+      <li><strong>RunPod Serverless</strong> — production mode with pay-per-inference pricing</li>
+      <li><strong>Local Model Server</strong> — for development with a local GPU</li>
+      <li><strong>Mock Responses</strong> — full feature development without any GPU, enabling frontend and backend work to proceed independently</li>
+    </ul>
+
+    <h3>Context-Aware Prompting</h3>
+    <p>The AI service builds rich prompts that include patient demographics, vital signs, clinical alerts, notes, and base64-encoded X-ray images labeled with temporal roles (Previous / Current). This gives the model the full clinical picture rather than analyzing images in isolation.</p>
+
+    <div class="callout">
+      <p>The system uses Server-Sent Events (SSE) for real-time token streaming, so physicians see the AI's analysis appear word-by-word — providing a responsive experience even with large model outputs.</p>
+    </div>
+
+    <h2>Data & Storage</h2>
+    <p>All data lives in Supabase (hosted PostgreSQL). The schema uses SHA-256 deduplication for image blobs to avoid storing duplicate scans. Patient images are linked with visit dates to enable temporal analysis. Conversations and messages follow a thread-style pattern, with each message linked to the specific images and notes used for that analysis.</p>
+
+    <h2>Challenges</h2>
+    <ul>
+      <li><strong>Memory constraints:</strong> Getting a 4B-parameter vision-language model to run efficiently required careful quantization tuning and warm-up generation on startup to catch load issues early.</li>
+      <li><strong>Image handling:</strong> Medical images come in various formats (DICOM, PNG, JPEG). I used <code>pydicom</code> and <code>Pillow</code> for format normalization, with Supabase Storage providing signed URLs for secure access.</li>
+      <li><strong>Streaming across layers:</strong> Getting token-level streaming from the model server through FastAPI to the Next.js frontend required thread-based background generation with a custom token iterator.</li>
+    </ul>
+
+    <h2>Outcomes</h2>
+    <ul>
+      <li>87% accuracy on 5K+ chest X-ray images for diagnostic analysis</li>
+      <li>Full clinical workflow: patient lookup, vitals review, imaging comparison, AI analysis — all in one interface</li>
+      <li>Complete audit trail of every AI interaction for compliance</li>
+      <li>Deployable on a single GPU pod or as a split architecture with serverless inference</li>
+    </ul>
+
+    <h2>What I Learned</h2>
+    <p>Building MedGemma Clinical Suite taught me that the hardest part of medical AI isn't the model — it's the system around it. Secure authentication, data integrity, audit logging, and a workflow that physicians will actually use are what separate a notebook experiment from a production platform. The experience deepened my understanding of full-stack AI system design, from LoRA fine-tuning to real-time streaming architectures.</p>
+
+  </div>
+
+  <div class="article-footer">
+    <a href="https://github.com/muhit009/MS-MedGemmaTI" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> View on GitHub</a>
+    <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Portfolio</a>
+  </div>
+</div>
+
+</body>
+</html>
