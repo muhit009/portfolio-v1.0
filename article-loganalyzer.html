@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intelligent Log Analyzer — Abdullah Al Muhit</title>
+  <meta name="description" content="How I built an AI-powered log analysis platform with ML anomaly detection, error clustering, and a cyberpunk-styled dashboard.">
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root, [data-theme="dark"] {
+      --bg-dark: #0b0d17;
+      --bg-card: #131627;
+      --accent: #b794f6;
+      --accent-secondary: #7c3aed;
+      --text-primary: #e2e8f0;
+      --text-secondary: #94a3b8;
+      --border-color: rgba(183, 148, 246, 0.12);
+      --glass-bg: rgba(19, 22, 39, 0.6);
+      --glass-border: rgba(183, 148, 246, 0.08);
+      --code-bg: #1a1e35;
+      --font-body: 'Space Grotesk', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    [data-theme="light"] {
+      --bg-dark: #f8f9fc;
+      --bg-card: #ffffff;
+      --accent: #7c3aed;
+      --accent-secondary: #6d28d9;
+      --text-primary: #1e1b4b;
+      --text-secondary: #64748b;
+      --border-color: rgba(124, 58, 237, 0.15);
+      --glass-bg: rgba(255, 255, 255, 0.7);
+      --glass-border: rgba(124, 58, 237, 0.12);
+      --code-bg: #f1f0ff;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .article-container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent);
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      margin-bottom: 40px;
+      transition: opacity 0.3s;
+    }
+    .back-link:hover { opacity: 0.7; }
+
+    .article-meta {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    .article-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 16px;
+    }
+
+    .article-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin-bottom: 36px;
+      line-height: 1.6;
+    }
+
+    .article-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 40px;
+    }
+    .article-tags span {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+      color: var(--accent);
+      background: var(--glass-bg);
+    }
+
+    .article-body h2 {
+      font-size: 1.4rem;
+      margin: 40px 0 16px;
+      color: var(--accent);
+    }
+
+    .article-body h3 {
+      font-size: 1.15rem;
+      margin: 28px 0 12px;
+    }
+
+    .article-body p {
+      margin-bottom: 18px;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .article-body ul, .article-body ol {
+      margin: 0 0 18px 20px;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+    .article-body li { margin-bottom: 8px; }
+
+    .article-body code {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      background: var(--code-bg);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .article-body pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px;
+      overflow-x: auto;
+      margin-bottom: 20px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    .callout {
+      background: var(--glass-bg);
+      border-left: 3px solid var(--accent);
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 24px 0;
+    }
+    .callout p { margin-bottom: 0; }
+
+    .article-footer {
+      margin-top: 60px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .article-footer a {
+      color: var(--accent);
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .article-footer a:hover { opacity: 0.7; }
+
+    @media (max-width: 600px) {
+      .article-title { font-size: 1.6rem; }
+      .article-container { padding: 40px 16px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="article-container">
+  <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Portfolio</a>
+
+  <div class="article-meta">PROJECT DEEP DIVE &mdash; 2025</div>
+  <h1 class="article-title">Scaling Log Analysis with ML Anomaly Detection</h1>
+  <p class="article-subtitle">How I built an intelligent log analysis platform that ingests multi-format logs, detects anomalies with Isolation Forest, clusters errors with TF-IDF and K-Means, and presents everything through an interactive dashboard.</p>
+
+  <div class="article-tags">
+    <span>FastAPI</span>
+    <span>PostgreSQL</span>
+    <span>Scikit-Learn</span>
+    <span>Docker</span>
+    <span>SQLAlchemy</span>
+    <span>Chart.js</span>
+    <span>JWT Auth</span>
+  </div>
+
+  <div class="article-body">
+
+    <h2>The Problem</h2>
+    <p>DevOps teams drown in logs. A production system can generate thousands of log entries per hour across multiple services, formats, and severity levels. Manually scanning logs for anomalies, recurring errors, and incident patterns is slow and error-prone. I wanted to build a platform that automates the heavy lifting — ingest any log format, detect what's abnormal, cluster related errors together, and give engineers a clear visual picture of system health.</p>
+
+    <h2>Architecture</h2>
+    <p>The system is a full-stack application with four main layers:</p>
+    <pre>
+Dashboard (Vanilla JS + Chart.js)
+    │
+    ▼  REST API
+FastAPI Backend
+    │
+    ├── Service Layer
+    │   ├── Multi-Format Parser (syslog, JSON, logcat, access logs)
+    │   ├── Ingestion Pipeline (batch processing, 2K lines/transaction)
+    │   └── ML Analytics (Isolation Forest + TF-IDF/K-Means)
+    │
+    └── PostgreSQL 16 (via Docker)
+        └── Logs, Anomalies, Clusters, Pipeline Runs</pre>
+
+    <h3>Multi-Format Log Parser</h3>
+    <p>One of the first challenges was handling the variety of log formats in the real world. I built a parser chain that auto-detects and normalizes:</p>
+    <ul>
+      <li><strong>Application logs</strong> — ISO 8601 timestamps with log level, service name, and message</li>
+      <li><strong>Android logcat</strong> — Both threadtime and brief formats with automatic year inference</li>
+      <li><strong>Apache access logs</strong> — Combined format with IP, HTTP method, status code, and user agent</li>
+      <li><strong>JSON logs</strong> — Direct field extraction</li>
+    </ul>
+    <p>Each parser returns a confidence score (0–1) for result quality. Even when a line fails to parse, the raw text is preserved — no data is ever lost, and failed parses can be re-attempted later with updated parsers.</p>
+
+    <h3>Ingestion Pipeline</h3>
+    <p>Log files are uploaded via a REST endpoint and processed asynchronously using FastAPI's <code>BackgroundTasks</code>. The pipeline processes files in batches of 2,000 lines per database transaction, balancing throughput with memory usage. A unique constraint on <code>(log_file_id, line_number)</code> prevents duplicate entries on re-upload, making the ingestion idempotent.</p>
+
+    <h2>ML Pipeline</h2>
+
+    <h3>Anomaly Detection with Isolation Forest</h3>
+    <p>The anomaly detection works by segmenting logs into 2-minute time windows and extracting features from each window:</p>
+    <ul>
+      <li>Total count, error count, warning count, info count, debug count</li>
+      <li>Error rate (errors / total)</li>
+      <li>Number of unique services reporting</li>
+    </ul>
+    <p>These features are fed into an <code>Isolation Forest</code> model (100 estimators, 10% contamination) which scores each window from 0 to 1 — higher scores indicate more anomalous behavior. The model naturally surfaces time windows with unusual spikes in error rates, unexpected service patterns, or abnormal volume.</p>
+
+    <div class="callout">
+      <p>Isolation Forest works well here because it doesn't require labeled anomaly data. It learns what "normal" looks like from the log patterns themselves and flags deviations — exactly what you want for production log monitoring where you don't have pre-labeled incidents.</p>
+    </div>
+
+    <h3>Error Clustering with TF-IDF + K-Means</h3>
+    <p>Error messages are often noisy and repetitive. The clustering pipeline filters ERROR-level messages, vectorizes them with <code>TF-IDF</code> (1,000 max features, English stopwords removed), and groups them with <code>K-Means</code>. The number of clusters is auto-tuned based on the error volume (roughly 1 cluster per 5 errors, min 2, max 20).</p>
+    <p>Each cluster output includes the example message closest to the centroid, the top 5 keywords, message count, and the first/last seen timestamps — giving engineers a quick summary of each error category without reading through hundreds of individual entries.</p>
+
+    <h2>Dashboard & Visualization</h2>
+    <p>The frontend is a single-page application built with vanilla JavaScript (ES6 modules) and Chart.js 4 — no build step required. It features 10 interactive charts:</p>
+    <ul>
+      <li><strong>Log Level Breakdown</strong> — doughnut chart with center total</li>
+      <li><strong>Top Services</strong> — horizontal bar chart by frequency</li>
+      <li><strong>Log Volume Timeline</strong> — time-series line chart</li>
+      <li><strong>Anomaly Score Timeline</strong> — color-coded (green/yellow/red) by severity</li>
+      <li><strong>Error Rate & Event Volume</strong> — dual-axis chart for correlation</li>
+      <li><strong>Log Composition Over Time</strong> — stacked area chart by level</li>
+      <li><strong>Top Error Clusters</strong> — horizontal bar with keyword tooltips</li>
+    </ul>
+    <p>The dashboard also includes a Log Explorer with pagination, filtering by level/service/keyword/date range, and sortable columns for detailed investigation.</p>
+
+    <h2>Authentication & Security</h2>
+    <p>The platform uses JWT authentication (HS256, 60-minute expiry) with two roles: <strong>Admin</strong> (upload logs, run analytics, create users) and <strong>Viewer</strong> (read-only access to dashboards and results). Users can also generate revocable API keys for programmatic access, stored as bcrypt hashes in the database.</p>
+
+    <h2>Key Technical Decisions</h2>
+
+    <h3>Why Isolation Forest Over Other Approaches?</h3>
+    <p>I evaluated several anomaly detection methods. Statistical approaches (z-scores, IQR) are too rigid for multi-dimensional log features. DBSCAN doesn't handle the varying density of log patterns well. Isolation Forest is unsupervised, handles high-dimensional features naturally, and runs fast enough for interactive use — the entire ML pipeline completes in seconds even on 10K+ entries.</p>
+
+    <h3>Why Vanilla JS Instead of React?</h3>
+    <p>The frontend is a monitoring dashboard, not a complex application with deeply nested state. Vanilla ES6 modules with hash-based routing keep the bundle at zero, the page loads instantly, and there's no build toolchain to maintain. Chart.js handles all the visualization complexity.</p>
+
+    <h3>Batch Processing Trade-offs</h3>
+    <p>Processing 2,000 lines per transaction was the sweet spot I found through testing. Smaller batches had too much transaction overhead; larger batches risked memory pressure and made partial failure recovery harder. The idempotent design means if processing fails mid-file, you can simply re-upload and only new lines get inserted.</p>
+
+    <h2>Outcomes</h2>
+    <ul>
+      <li>Handles 10K+ log entries per day with sub-second query response</li>
+      <li>Multi-format parser supports syslog, JSON, logcat, and Apache access logs with confidence scoring</li>
+      <li>ML pipeline surfaces anomalous time windows and clusters related errors automatically</li>
+      <li>Role-based access with JWT + revocable API keys for programmatic integration</li>
+      <li>10 interactive dashboard charts for real-time system health monitoring</li>
+      <li>Full audit trail of analytics pipeline runs</li>
+    </ul>
+
+    <h2>What I Learned</h2>
+    <p>This project reinforced that the ML model is often the easy part — the real engineering challenge is building robust data pipelines. Handling log format diversity, ensuring idempotent ingestion, and designing a schema that supports both real-time queries and batch analytics required more thought than the Isolation Forest configuration. The project also deepened my experience with FastAPI's async capabilities, SQLAlchemy 2.0's modern patterns, and building responsive dashboards with Chart.js.</p>
+
+  </div>
+
+  <div class="article-footer">
+    <a href="https://github.com/muhit009/Intelligent-log-analyzer-Incident-Assistant" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> View on GitHub</a>
+    <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Portfolio</a>
+  </div>
+</div>
+
+</body>
+</html>

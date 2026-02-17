@@ -1,297 +1,876 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Portfolio</title>
+  <title>Abdullah Al Muhit | Backend & AI Engineer</title>
+  <meta name="description" content="Backend & AI Engineer building production AI systems, scalable APIs, and ML-backed features. MEng CS at Virginia Tech.">
+  <meta name="author" content="Abdullah Al Muhit">
+  <meta name="keywords" content="Backend Engineer, AI Engineer, Python, FastAPI, Machine Learning, Virginia Tech, Portfolio">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Abdullah Al Muhit | Backend & AI Engineer">
+  <meta property="og:description" content="Backend & AI Engineer building production AI systems, scalable APIs, and ML-backed features.">
+  <meta property="og:image" content="./amiMuhit.png">
+  <meta property="og:url" content="">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Abdullah Al Muhit | Backend & AI Engineer">
+  <meta name="twitter:description" content="Backend & AI Engineer building production AI systems, scalable APIs, and ML-backed features.">
+  <meta name="twitter:image" content="./amiMuhit.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+  <!-- Stylesheets -->
   <link rel="stylesheet" href="styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-  <style>
-    #typed-output {
-      font-family: Arial, sans-serif;
-      font-size: 36px;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  </style>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">
-                <a href="#home"></a>
-            </div>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#education-experience">Education & Experience</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#projects">Projects</a></li>
-                
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-            <div class="burger">
-                <div class="line1"></div>
-                <div class="line2"></div>
-                <div class="line3"></div>
-            </div>
-        </nav>
-    </header>
-    
-    <section id="home" class="hero">
-        <div class="home-image">
-            <div class="hero-content">
-                <h1 id="typed-output"></h1>
-                <p>
-                    Master's student at <b>VIRGINIA TECH</b>, specializing in Machine Learning and Data Analysis. Driven by a passion for turning complex data into actionable insights and building intelligent systems that make a difference.                </p>
-                <a href="#about" class="cta-button">Learn More About Me</a>
-            </div>
-        </div>
-    </section>      
-<!--       
-  <section id="home" class="hero">
-    <div class="home-image">
-        <img src="./img/muhit_bg.png" alt="Abdullah Al Muhit Profile Picture">
-    
-        <div class="hero-content">
-            <h1 id="typed-output"></h1>
-            <p>A Master of Engineering student specializing in Machine Learning and Software Engineering, ready to tackle complex challenges and innovate solutions.</p>
-            <a href="#about" class="cta-button">Learn More About Me</a>
-        </div>
+
+  <!-- Skip to content (Accessibility) -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Loading Screen -->
+  <div id="loader" class="loader" aria-hidden="true">
+    <div class="loader-logo">AM</div>
+  </div>
+
+  <!-- Custom Cursor -->
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+  <div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+
+  <!-- Scroll Progress Bar -->
+  <div class="scroll-progress" id="scrollProgress" role="progressbar" aria-label="Page scroll progress"></div>
+
+  <!-- Navbar -->
+  <header id="navbar" role="banner">
+    <nav aria-label="Main navigation">
+      <a href="#" class="nav-logo" aria-label="Home">AM</a>
+      <div class="nav-links" id="navLinks" role="menubar">
+        <a href="#about" role="menuitem">About</a>
+        <a href="#experience" role="menuitem">Experience</a>
+        <a href="#skills" role="menuitem">Skills</a>
+        <a href="#projects" role="menuitem">Projects</a>
+        <a href="#contact" role="menuitem">Contact</a>
+        <a href="./asstes/Abdullah_Al_Muhit_Resume.pdf" class="resume-btn" target="_blank" rel="noopener noreferrer">Resume</a>
+      </div>
+      <div class="nav-right">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light theme">
+          <i class="fas fa-moon" id="themeIcon"></i>
+        </button>
+        <button class="burger" id="burger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-content">
+
+  <!-- Hero Section -->
+  <section id="hero">
+    <div class="hero-text">
+      <p class="hero-greeting">Hello, I'm</p>
+      <h1 class="hero-name">Abdullah Al Muhit</h1>
+      <h2 class="hero-subtitle">
+        <span class="gradient-text">Backend & AI Engineer</span>
+      </h2>
+      <p class="hero-description">
+        I build production AI systems, scalable APIs, and ML-backed features.
+        Currently pursuing MEng CS at Virginia Tech.
+      </p>
+      <div class="hero-buttons">
+        <a href="#projects" class="btn btn-primary">View Projects</a>
+        <a href="#contact" class="btn btn-outline">Get In Touch</a>
+      </div>
+      <div class="hero-social">
+        <a href="https://github.com/muhit009" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
+        <a href="https://linkedin.com/in/abdullah-al-muhit-5b4a89215" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://www.facebook.com/muhit009/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+      </div>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <div class="mesh-gradient"></div>
+      <div class="floating-code">
+        <pre><code><span class="code-keyword">class</span> <span class="code-class">Engineer</span>:
+    <span class="code-keyword">def</span> <span class="code-func">__init__</span>(self):
+        self.name = <span class="code-string">"Abdullah"</span>
+        self.role = <span class="code-string">"Backend & AI"</span>
+        self.stack = [
+            <span class="code-string">"Python"</span>, <span class="code-string">"FastAPI"</span>,
+            <span class="code-string">"PostgreSQL"</span>, <span class="code-string">"Docker"</span>
+        ]</code></pre>
+      </div>
     </div>
   </section>
-   -->
 
-  <section id="about">
+  <!-- About Section -->
+  <section id="about" class="section reveal">
+    <h2 class="section-heading">About Me</h2>
     <div class="about-container">
-        <div class="about-image">
-            <img src="amiMuhit.png" alt="Abdullah Al Muhit Profile Picture" class="profile-pic">
-            <div class="social-links">
-                <a href="https://linkedin.com/in/abdullah-al-muhit-5b4a89215" target="_blank" aria-label="LinkedIn">
-                    <img src="icons/LinkedIn_icon.svg.png" alt="LinkedIn">
-                </a>
-                <a href="https://github.com/muhit009" target="_blank" aria-label="GitHub">
-                    <img src="icons/GitHub.png" alt="GitHub">
-                </a>
-                <a href="https://www.facebook.com/muhit009/" target="_blank" aria-label="Facebook">
-                    <img src="icons/Facebook_logo.png" alt="Facebook">
-                </a>
-            </div> 
+      <div class="about-text">
+        <p>
+          Hello! I'm Abdullah, a <strong>Master of Engineering</strong> student in <strong>Computer Science</strong> at
+          <strong>Virginia Tech</strong> (GPA: 3.63). I'm a backend software engineer with experience building
+          production AI systems, scalable APIs, and ML-backed features.
+        </p>
+        <p>
+          I've worked on everything from medical AI platforms and log analysis systems to deepfake detection
+          and e-commerce backends. Beyond code, I'm a soccer player, chess enthusiast, and collaborative leader
+          who thrives on turning complex problems into elegant solutions.
+        </p>
+        <p>Here are some technologies I've been working with recently:</p>
+        <ul class="tech-list">
+          <li>Python</li>
+          <li>FastAPI</li>
+          <li>Django / DRF</li>
+          <li>PostgreSQL / Supabase</li>
+          <li>Docker</li>
+          <li>TensorFlow / PyTorch</li>
+          <li>Redis / Celery</li>
+          <li>AWS (EC2, S3)</li>
+        </ul>
+      </div>
+      <div class="about-image">
+        <div class="image-wrapper">
+          <img src="amiMuhit.png" alt="Abdullah Al Muhit — Backend & AI Engineer" class="profile-pic" loading="lazy">
         </div>
-        
-        <div class="about-details">
-            <h2>About Me</h2>
-            <p>
-                <strong>Hello, I'm Abdullah Al Muhit!</strong> I'm currently pursuing a <strong>Master of Engineering</strong> in <strong>Computer Science</strong> at <strong>Virginia Tech</strong>, specializing in <strong>Machine Learning</strong>, <strong>Data Analysis</strong>, and <strong>Software Engineering</strong>. With hands-on experience as an AI/ML Engineer and a portfolio of impactful projects, I'm dedicated to solving complex challenges and creating innovative solutions.
-            </p>
-            <p>
-                Beyond academics, I'm a passionate soccer player, chess enthusiast, and experienced leader. I believe in blending technical expertise with creativity to tackle real-world problems effectively.
-            </p>
-            <a href="./asstes/Abdullah- Al- Muhit CV.pdf" download class="cta-button">Download My CV</a>
-        </div>
+      </div>
     </div>
-</section>
+  </section>
 
-  
-  
+  <!-- What I Do Section -->
+  <section id="services" class="section reveal">
+    <h2 class="section-heading">What I Do</h2>
+    <div class="services-grid">
+      <div class="service-card glass-card">
+        <div class="service-icon"><i class="fas fa-server"></i></div>
+        <h3>Backend Engineering</h3>
+        <p>Building scalable REST APIs and microservices with FastAPI, Django, and Flask. Designing robust database schemas, implementing authentication, and optimizing for performance.</p>
+      </div>
+      <div class="service-card glass-card">
+        <div class="service-icon"><i class="fas fa-brain"></i></div>
+        <h3>AI / ML Systems</h3>
+        <p>Developing production ML pipelines from data preprocessing to model deployment. Experience with computer vision, NLP, and deploying models behind real-time APIs.</p>
+      </div>
+      <div class="service-card glass-card">
+        <div class="service-icon"><i class="fas fa-database"></i></div>
+        <h3>Data Engineering</h3>
+        <p>Designing ETL pipelines, data models, and analytics dashboards. Optimizing database queries, building caching layers, and managing data infrastructure at scale.</p>
+      </div>
+    </div>
+  </section>
 
-  <section id="education-experience">
-    <h2>Education & Experience</h2>
+  <!-- Stats Section -->
+  <section id="stats" class="stats-section reveal">
+    <div class="stats-grid">
+      <div class="stat-item glass-card">
+        <span class="stat-number" data-target="4">0</span><span class="stat-plus">+</span>
+        <span class="stat-label">Production Projects</span>
+      </div>
+      <div class="stat-item glass-card">
+        <span class="stat-number" data-target="87">0</span><span class="stat-plus">%</span>
+        <span class="stat-label">Model Accuracy</span>
+      </div>
+      <div class="stat-item glass-card">
+        <span class="stat-number" data-target="50">0</span><span class="stat-plus">K+</span>
+        <span class="stat-label">Data Points</span>
+      </div>
+      <div class="stat-item glass-card">
+        <span class="stat-number" data-target="3.63" data-decimals="2">0</span>
+        <span class="stat-label">GPA</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience Section -->
+  <section id="experience" class="section reveal">
+    <h2 class="section-heading">Experience</h2>
     <div class="timeline">
-        <!-- Virginia Tech -->
-        <div class="timeline-item">
-            <div class="timeline-icon">
-                <i class="fas fa-university"></i>
-            </div>
-            <div class="timeline-content">
-                <h3>Virginia Tech</h3>
-                <p><strong>Master of Engineering in Computer Science and Applications</strong></p>
-                <p><em>August 2024 – Present</em></p>
-                <ul class="details">
-                    <li><strong>Relevant Coursework:</strong> Machine Learning, Information Visualization, Software Engineering</li>
-                    <li>Collaborated on machine learning projects focused on predictive modeling.</li>
-                </ul>
-            </div>
+      <div class="timeline-line" aria-hidden="true"></div>
+      <div class="timeline-item">
+        <div class="timeline-dot" aria-hidden="true"></div>
+        <div class="timeline-card glass-card">
+          <span class="timeline-date">Aug 2024 — May 2026</span>
+          <h3>MEng in Computer Science</h3>
+          <p class="timeline-place">Virginia Tech</p>
+          <ul>
+            <li>GPA: 3.63/4.0</li>
+            <li>Coursework: Machine Learning, Deep Learning, NLP, Cloud Computing, Software Engineering</li>
+          </ul>
         </div>
-        <!-- Inflexion Point Technologies -->
-        <div class="timeline-item">
-            <div class="timeline-icon">
-                <i class="fas fa-briefcase"></i>
-            </div>
-            <div class="timeline-content">
-                <h3>Inflexion Point Technologies</h3>
-                <p><strong>AI/ML Engineer Intern</strong></p>
-                <p><em>August 2023 – October 2023</em></p>
-                <ul class="details">
-                    <li>Improved data readiness by 20% through efficient preprocessing workflows.</li>
-                    <li>Created visualizations for performance metrics and insights.</li>
-                    <li>Delivered data-driven client solutions in a collaborative team environment.</li>
-                </ul>
-            </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot" aria-hidden="true"></div>
+        <div class="timeline-card glass-card">
+          <span class="timeline-date">Sep 2023 — Oct 2023</span>
+          <h3>AI/ML Engineer Intern</h3>
+          <p class="timeline-place">Inflexion Point Technologies</p>
+          <ul>
+            <li>Built production ML pipeline using Python and Scikit-learn to optimize ad targeting, improving precision by 15% and recall by 12% across 50K+ daily impressions</li>
+            <li>Developed automated preprocessing pipeline reducing model training time by 20%</li>
+            <li>Integrated ML model predictions into production dashboard via Flask REST API</li>
+            <li>Collaborated with backend engineers to deploy models to staging/production</li>
+          </ul>
         </div>
-        <!-- BRAC University -->
-        <div class="timeline-item">
-            <div class="timeline-icon">
-                <i class="fas fa-university"></i>
-            </div>
-            <div class="timeline-content">
-                <h3>BRAC University</h3>
-                <p><strong>Bachelor of Science in Computer Science and Engineering</strong></p>
-                <p><em>September 2018 – January 2023</em></p>
-                <ul class="details">
-                    <li><strong>Relevant Coursework:</strong> Data Structures & Algorithms, Database Systems, Artificial Intelligence</li>
-                    <li>Graduated with a focus on AI and software development.</li>
-                </ul>
-            </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot" aria-hidden="true"></div>
+        <div class="timeline-card glass-card">
+          <span class="timeline-date">2018 — 2023</span>
+          <h3>BSc in Computer Science & Engineering</h3>
+          <p class="timeline-place">BRAC University</p>
+          <ul>
+            <li>GPA: 3.18/4.0</li>
+            <li>General Secretary, BRAC University Soccer Club</li>
+            <li>Runner-up: BRAC University Chess and Soccer Tournaments</li>
+          </ul>
         </div>
+      </div>
     </div>
-</section>
+  </section>
 
+  <!-- Skills Section -->
+  <section id="skills" class="section reveal">
+    <h2 class="section-heading">Skills</h2>
 
-  
-<section id="skills">
-    <h2>Skills</h2>
+    <!-- Proficiency Bars -->
+    <div class="proficiency-section">
+      <h3 class="proficiency-title">Core Proficiencies</h3>
+      <div class="proficiency-grid">
+        <div class="proficiency-item">
+          <div class="proficiency-label"><span>Python</span><span class="proficiency-pct">95%</span></div>
+          <div class="proficiency-track"><div class="proficiency-bar" data-width="95"></div></div>
+        </div>
+        <div class="proficiency-item">
+          <div class="proficiency-label"><span>FastAPI / Django</span><span class="proficiency-pct">90%</span></div>
+          <div class="proficiency-track"><div class="proficiency-bar" data-width="90"></div></div>
+        </div>
+        <div class="proficiency-item">
+          <div class="proficiency-label"><span>PostgreSQL</span><span class="proficiency-pct">88%</span></div>
+          <div class="proficiency-track"><div class="proficiency-bar" data-width="88"></div></div>
+        </div>
+        <div class="proficiency-item">
+          <div class="proficiency-label"><span>Docker / DevOps</span><span class="proficiency-pct">80%</span></div>
+          <div class="proficiency-track"><div class="proficiency-bar" data-width="80"></div></div>
+        </div>
+        <div class="proficiency-item">
+          <div class="proficiency-label"><span>TensorFlow / PyTorch</span><span class="proficiency-pct">82%</span></div>
+          <div class="proficiency-track"><div class="proficiency-bar" data-width="82"></div></div>
+        </div>
+        <div class="proficiency-item">
+          <div class="proficiency-label"><span>AWS Cloud</span><span class="proficiency-pct">72%</span></div>
+          <div class="proficiency-track"><div class="proficiency-bar" data-width="72"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Cards -->
     <div class="skills-grid">
-        <div class="skill-category">
-            <h3>Programming Languages</h3>
-            <ul>
-                <li>Python</li>
-                <li>Java</li>
-            </ul>
+      <div class="skill-card glass-card">
+        <div class="skill-card-header"><i class="devicon-fastapi-plain"></i> Backend / APIs</div>
+        <div class="skill-tags">
+          <span class="skill-tag">FastAPI</span><span class="skill-tag">Django REST</span><span class="skill-tag">Flask</span>
+          <span class="skill-tag">PostgreSQL</span><span class="skill-tag">Supabase</span><span class="skill-tag">REST APIs</span>
+          <span class="skill-tag">JWT Auth</span><span class="skill-tag">Celery</span><span class="skill-tag">Redis</span>
         </div>
-        <div class="skill-category">
-            <h3>Frameworks & Libraries</h3>
-            <ul>
-                <li>Django</li>
-                <li>Django REST Framework</li>
-                <li>Scikit-Learn</li>
-                <li>Tensorflow</li>
-                <li>PyTorch</li>
-            </ul>
+      </div>
+      <div class="skill-card glass-card">
+        <div class="skill-card-header"><i class="devicon-python-plain"></i> Programming</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Python</span><span class="skill-tag">Java</span><span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">SQL</span><span class="skill-tag">HTML/CSS</span>
         </div>
-        <div class="skill-category">
-            <h3>Data Tools</h3>
-            <ul>
-                <li>Tableau</li>
-                <li>Dash</li>
-                <li>Plotly</li>
-                <li>Matplotlib</li>
-            </ul>
+      </div>
+      <div class="skill-card glass-card">
+        <div class="skill-card-header"><i class="devicon-tensorflow-original"></i> Machine Learning</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Scikit-Learn</span><span class="skill-tag">TensorFlow</span><span class="skill-tag">PyTorch</span>
+          <span class="skill-tag">Feature Engineering</span><span class="skill-tag">Computer Vision</span><span class="skill-tag">Ensemble Methods</span>
         </div>
-        <div class="skill-category">
-            <h3>Machine Learning</h3>
-            <ul>
-                <li>Data Preprocessing</li>
-                <li>Feature Engineering</li>
-                <li>Model Development</li>
-            </ul>
+      </div>
+      <div class="skill-card glass-card">
+        <div class="skill-card-header"><i class="fas fa-language"></i> NLP / LLMs</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Transformers</span><span class="skill-tag">Embeddings</span><span class="skill-tag">Prompt Engineering</span>
+          <span class="skill-tag">LLM Analysis</span><span class="skill-tag">Explainability</span>
         </div>
-        <div class="skill-category">
-            <h3>Soft Skills</h3>
-            <ul>
-                <li>Leadership</li>
-                <li>Communication</li>
-                <li>Adaptability</li>
-                <li>Latex</li>
-                <li>GitHub</li>
-            </ul>
+      </div>
+      <div class="skill-card glass-card">
+        <div class="skill-card-header"><i class="devicon-docker-plain"></i> Cloud / DevOps</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Docker</span><span class="skill-tag">AWS (EC2, S3)</span><span class="skill-tag">Git</span>
+          <span class="skill-tag">Linux</span><span class="skill-tag">CI/CD</span><span class="skill-tag">Vercel</span>
         </div>
+      </div>
+      <div class="skill-card glass-card">
+        <div class="skill-card-header"><i class="fas fa-database"></i> Data</div>
+        <div class="skill-tags">
+          <span class="skill-tag">ETL Pipelines</span><span class="skill-tag">Data Modeling</span><span class="skill-tag">Database Design</span>
+          <span class="skill-tag">Query Optimization</span><span class="skill-tag">Data Visualization</span>
+        </div>
+      </div>
     </div>
-</section>
+  </section>
 
-  
-  
+  <!-- Projects Section -->
+  <section id="projects" class="section reveal">
+    <h2 class="section-heading">Projects</h2>
 
-<section id="projects">
-    <h2>Projects</h2>
+    <!-- Featured Projects -->
+    <div class="featured-project glass-card" data-modal="medgemma" role="button" tabindex="0" aria-label="View MedGemma Clinical Suite details">
+      <div class="featured-image"><i class="fas fa-heartbeat"></i></div>
+      <div class="featured-content">
+        <p class="featured-label">Featured Project</p>
+        <h3>MedGemma Clinical Suite</h3>
+        <p class="featured-description">Full-stack medical AI platform with FastAPI backend, patient management, vital signs tracking, and AI-powered imaging analysis using fine-tuned MedGemma 1.5 with 87% accuracy on 5K+ images.</p>
+        <div class="project-tags">
+          <span>FastAPI</span><span>Supabase</span><span>TensorFlow</span><span>PostgreSQL</span><span>JWT</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/muhit009/MS-MedGemmaTI" target="_blank" rel="noopener noreferrer" class="project-icon" aria-label="GitHub" onclick="event.stopPropagation()"><i class="fab fa-github"></i></a>
+          <span class="modal-hint"><i class="fas fa-expand-alt"></i> Click for details</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="featured-project featured-reverse glass-card" data-modal="loganalyzer" role="button" tabindex="0" aria-label="View Intelligent Log Analyzer details">
+      <div class="featured-image"><i class="fas fa-terminal"></i></div>
+      <div class="featured-content">
+        <p class="featured-label">Featured Project</p>
+        <h3>Intelligent Log Analyzer</h3>
+        <p class="featured-description">Production-grade AI-powered log analysis system handling 10K+ entries/day with ML anomaly detection, LLM root cause analysis, and Redis caching reducing query latency by 60%.</p>
+        <div class="project-tags">
+          <span>FastAPI</span><span>PostgreSQL</span><span>Docker</span><span>Redis</span><span>LLM APIs</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/muhit009/Intelligent-log-analyzer-Incident-Assistant" target="_blank" rel="noopener noreferrer" class="project-icon" aria-label="GitHub" onclick="event.stopPropagation()"><i class="fab fa-github"></i></a>
+          <span class="modal-hint"><i class="fas fa-expand-alt"></i> Click for details</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Other Projects -->
+    <h3 class="other-projects-heading">Other Noteworthy Projects</h3>
     <div class="projects-grid">
-        <div class="project-card">
-            <h3>IMDB Movie Rating Visualization</h3>
-            <p>An interactive dashboard with feature engineering for predictions using ML models.</p>
-            <a href="https://github.com/muhit009/Movie_Information-Visualization-and-Machine-Learning" target="_blank" class="project-link">View Project</a>
+      <div class="project-card glass-card" data-modal="deepfake" role="button" tabindex="0">
+        <div class="project-card-image" style="background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-card) 100%);"><i class="fas fa-microphone-alt"></i></div>
+        <div class="project-card-body">
+          <div class="project-top">
+            <i class="far fa-folder-open project-folder"></i>
+            <div class="project-links">
+              <a href="https://github.com/muhit009/Generator-Guided-Synthetic-Speech-for-Robust-Deepfake-Detection" target="_blank" rel="noopener noreferrer" class="project-icon" aria-label="GitHub" onclick="event.stopPropagation()"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+          <h3>Deepfake Speech Detection</h3>
+          <p>RawNet2-based deepfake detection achieving 94% accuracy on ASVspoof 2019 dataset with 100K+ audio samples.</p>
+          <div class="project-tags"><span>Python</span><span>PyTorch</span><span>RawNet2</span><span>ASVspoof</span></div>
         </div>
-        <div class="project-card">
-            <h3>Fresh Market (Taajahat) Backend</h3>
-            <p>Backend development for an e-commerce platform using Django REST Framework.</p>
-            <a href="https://github.com/muhit009/TajahatEcom" target="_blank" class="project-link">View Project</a>
+      </div>
+      <div class="project-card glass-card" data-modal="tajahatecom" role="button" tabindex="0">
+        <div class="project-card-image" style="background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-dark) 100%);"><i class="fas fa-shopping-cart"></i></div>
+        <div class="project-card-body">
+          <div class="project-top">
+            <i class="far fa-folder-open project-folder"></i>
+            <div class="project-links">
+              <a href="https://github.com/muhit009/TajahatEcom" target="_blank" rel="noopener noreferrer" class="project-icon" aria-label="GitHub" onclick="event.stopPropagation()"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+          <h3>TajahatEcom Backend</h3>
+          <p>Scalable e-commerce REST API for a fresh produce marketplace with 10 normalized tables and Celery async task queue.</p>
+          <div class="project-tags"><span>Django REST</span><span>PostgreSQL</span><span>Celery</span><span>Redis</span></div>
         </div>
-        <div class="project-card">
-            <h3>IBM Telco Churn Analysis and Prediction</h3>
-            <p>Advanced EDA techniques and churn prediction model development on IBM Telco data.</p>
-            <a href="https://github.com/muhit009/Ibm-dataset-analysis-and-predictions" target="_blank" class="project-link">View Project</a>
+      </div>
+      <div class="project-card glass-card" data-modal="ibm" role="button" tabindex="0">
+        <div class="project-card-image" style="background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-card) 100%);"><i class="fas fa-chart-line"></i></div>
+        <div class="project-card-body">
+          <div class="project-top">
+            <i class="far fa-folder-open project-folder"></i>
+            <div class="project-links">
+              <a href="https://github.com/muhit009/Ibm-dataset-analysis-and-predictions" target="_blank" rel="noopener noreferrer" class="project-icon" aria-label="GitHub" onclick="event.stopPropagation()"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+          <h3>IBM Telco Churn Analysis</h3>
+          <p>End-to-end customer churn analysis on IBM Telco data with advanced EDA and predictive modeling.</p>
+          <div class="project-tags"><span>Python</span><span>Pandas</span><span>Scikit-Learn</span><span>EDA</span></div>
         </div>
-        <div class="project-card">
-            <h3>Tableau Dashboard on Diamonds Dataset</h3>
-            <p>Designed an interactive Tableau dashboard showcasing diamond characteristics.</p>
-            <a href="https://github.com/muhit009/Tableau--Diamond-Dataset" target="_blank" class="project-link">View Project</a>
+      </div>
+      <div class="project-card glass-card" data-modal="imdb" role="button" tabindex="0">
+        <div class="project-card-image" style="background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-dark) 100%);"><i class="fas fa-film"></i></div>
+        <div class="project-card-body">
+          <div class="project-top">
+            <i class="far fa-folder-open project-folder"></i>
+            <div class="project-links">
+              <a href="https://github.com/muhit009/Movie_Information-Visualization-and-Machine-Learning" target="_blank" rel="noopener noreferrer" class="project-icon" aria-label="GitHub" onclick="event.stopPropagation()"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+          <h3>IMDB Movie Visualization & ML</h3>
+          <p>Interactive Dash dashboard analyzing IMDB movies by genre with regression, classification, and clustering.</p>
+          <div class="project-tags"><span>Python</span><span>Dash</span><span>Plotly</span><span>ML</span></div>
         </div>
-        <div class="project-card">
-            <h3>Cancer Prediction using Logistic Regression</h3>
-            <p>Built a cancer prediction model emphasizing data preprocessing and accuracy optimization.</p>
-            <a href="https://github.com/muhit009/Cancer-Prediction-Logistic-Regression-" target="_blank" class="project-link">View Project</a>
-        </div>
-        <div class="project-card">
-            <h3>Reinforcement Learning Agent Development</h3>
-            <p>Implemented Q-learning and policy gradients to develop intelligent agents.</p>
-            <a href="https://github.com/muhit009/Reinforcement-Learning" target="_blank" class="project-link">View Project</a>
-        </div>
+      </div>
     </div>
-</section>
+  </section>
 
+  <!-- Project Detail Modal -->
+  <div class="modal-overlay" id="projectModal" role="dialog" aria-modal="true" aria-label="Project details" hidden>
+    <div class="modal-content glass-card">
+      <button class="modal-close" aria-label="Close modal">&times;</button>
+      <div class="modal-header">
+        <span class="featured-label" id="modalLabel"></span>
+        <h3 id="modalTitle"></h3>
+      </div>
+      <p class="modal-description" id="modalDesc"></p>
+      <div class="modal-section">
+        <h4>Architecture</h4>
+        <p id="modalArch"></p>
+      </div>
+      <div class="modal-section">
+        <h4>Key Challenges</h4>
+        <p id="modalChallenges"></p>
+      </div>
+      <div class="modal-section">
+        <h4>Outcomes</h4>
+        <p id="modalOutcomes"></p>
+      </div>
+      <div class="modal-tags project-tags" id="modalTags"></div>
+      <div class="modal-links" id="modalLinks"></div>
+    </div>
+  </div>
 
+  <!-- Publications Section (commented out)
+  <section id="publications" class="section reveal">
+    <h2 class="section-heading">Publications & Research</h2>
+    <div class="publications-list">
+      <article class="publication-item glass-card">
+        <div class="pub-icon"><i class="fas fa-file-alt"></i></div>
+        <div class="pub-content">
+          <h3>Generator-Guided Synthetic Speech for Robust Deepfake Detection</h3>
+          <p class="pub-authors">Abdullah Al Muhit — Virginia Tech, 2025</p>
+          <p class="pub-desc">Research on RawNet2-based deepfake speech detection with generator-guided synthetic data augmentation, achieving 94% accuracy on ASVspoof 2019. Includes LLM-powered explainability analysis.</p>
+          <div class="pub-tags">
+            <span>Deep Learning</span><span>Audio Processing</span><span>Explainability</span>
+          </div>
+        </div>
+      </article>
+      <article class="publication-item glass-card">
+        <div class="pub-icon"><i class="fas fa-file-alt"></i></div>
+        <div class="pub-content">
+          <h3>MedGemma: Fine-Tuning Multimodal Models for Clinical Image Analysis</h3>
+          <p class="pub-authors">Abdullah Al Muhit — Virginia Tech, 2025</p>
+          <p class="pub-desc">Technical report on fine-tuning Google's MedGemma 1.5 for medical image classification with a full-stack clinical platform, achieving 87% diagnostic accuracy on 5K+ medical images.</p>
+          <div class="pub-tags">
+            <span>Medical AI</span><span>Computer Vision</span><span>Transfer Learning</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+  -->
 
+  <!-- Certifications Section -->
+  <section id="certifications" class="section reveal">
+    <h2 class="section-heading">Certifications</h2>
+    <div class="certs-grid">
+      <a href="./asstes/udemy_certification.jpeg" target="_blank" rel="noopener noreferrer" class="cert-card glass-card" style="text-decoration:none;color:inherit;">
+        <div class="cert-badge"><i class="fas fa-brain"></i></div>
+        <h3>Machine Learning A-Z: AI, Python & R + ChatGPT Prize</h3>
+        <p class="cert-issuer">Udemy</p>
+        <p class="cert-date">2025</p>
+      </a>
+      <a href="./asstes/financial_coi_certification.pdf" target="_blank" rel="noopener noreferrer" class="cert-card glass-card" style="text-decoration:none;color:inherit;">
+        <div class="cert-badge"><i class="fas fa-file-contract"></i></div>
+        <h3>Financial COI Training for Sponsored Research</h3>
+        <p class="cert-issuer">CITI Program / Virginia Tech</p>
+        <p class="cert-date">2025</p>
+      </a>
+      <a href="./asstes/IPS_Certification.pdf" target="_blank" rel="noopener noreferrer" class="cert-card glass-card" style="text-decoration:none;color:inherit;">
+        <div class="cert-badge"><i class="fas fa-shield-alt"></i></div>
+        <h3>Information Privacy and Security (IPS)</h3>
+        <p class="cert-issuer">CITI Program / Virginia Tech</p>
+        <p class="cert-date">2025</p>
+      </a>
+      <a href="./asstes/Django_certification.jpg" target="_blank" rel="noopener noreferrer" class="cert-card glass-card" style="text-decoration:none;color:inherit;">
+        <div class="cert-badge"><i class="fas fa-code"></i></div>
+        <h3>Python and Django Full Stack Web Developer Bootcamp</h3>
+        <p class="cert-issuer">Udemy</p>
+        <p class="cert-date">2026</p>
+      </a>
+    </div>
+  </section>
 
-<section id="contact">
-    <h2>Contact Me</h2>
-    <p><b>I'd love to connect with you! </b> </p>
-    <div class="contact-details">
-        <div class="contact-item">
+  <!-- Testimonials Section (commented out)
+  <section id="testimonials" class="section reveal">
+    <h2 class="section-heading">What People Say</h2>
+    <div class="testimonials-grid">
+      <div class="testimonial-card glass-card">
+        <div class="testimonial-quote"><i class="fas fa-quote-left"></i></div>
+        <p>"Abdullah delivered a production ML pipeline that exceeded our expectations. His ability to translate complex AI concepts into working, reliable software is remarkable."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-info">
+            <strong>Team Lead</strong>
+            <span>Inflexion Point Technologies</span>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card glass-card">
+        <div class="testimonial-quote"><i class="fas fa-quote-left"></i></div>
+        <p>"One of the most dedicated students I've worked with. Abdullah's MedGemma project demonstrated strong research skills and the ability to build end-to-end systems independently."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-info">
+            <strong>Course Instructor</strong>
+            <span>Virginia Tech CS Department</span>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card glass-card">
+        <div class="testimonial-quote"><i class="fas fa-quote-left"></i></div>
+        <p>"Abdullah is a great collaborator. He takes ownership of backend architecture and consistently writes clean, well-tested code that others can build on."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-info">
+            <strong>Project Teammate</strong>
+            <span>Virginia Tech</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  -->
+
+  <!-- Blog Section -->
+  <section id="blog" class="section reveal">
+    <h2 class="section-heading">Project Deep Dives</h2>
+    <div class="blog-grid">
+      <a href="article-medgemma.html" class="blog-card glass-card">
+        <span class="blog-date">2025</span>
+        <h3>Building a Production Medical AI Platform with FastAPI</h3>
+        <p>How I designed and built MedGemma Clinical Suite — architecture decisions, fine-tuning with LoRA, streaming inference, and lessons learned from deploying AI in healthcare.</p>
+        <span class="blog-read">Read article <i class="fas fa-arrow-right"></i></span>
+      </a>
+      <a href="article-loganalyzer.html" class="blog-card glass-card">
+        <span class="blog-date">2025</span>
+        <h3>Scaling Log Analysis with ML Anomaly Detection</h3>
+        <p>From multi-format parsing to Isolation Forest anomaly detection and TF-IDF error clustering — building an intelligent log analysis system that handles 10K+ entries per day.</p>
+        <span class="blog-read">Read article <i class="fas fa-arrow-right"></i></span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="section reveal">
+    <h2 class="section-heading">Get In Touch</h2>
+    <div class="contact-container">
+      <div class="contact-info">
+        <p>
+          I'm currently looking for opportunities in Backend Engineering, AI/ML, and building scalable production systems.
+          Whether you have a question or just want to say hi, I'd love to hear from you.
+        </p>
+        <div class="contact-details">
+          <div class="contact-item">
             <i class="fas fa-envelope"></i>
-            <p>Email:</p>
             <a href="mailto:muhitmostakim09@gmail.com">muhitmostakim09@gmail.com</a>
-        </div>
-        <div class="contact-item">
-            <i class="fas fa-phone-alt"></i>
-            <p>Phone:</p>
-            <a href="tel:+17033990883">+1 (703) 399-0883</a>
-        </div>
-        <div class="contact-item">
+          </div>
+          <div class="contact-item">
             <i class="fas fa-map-marker-alt"></i>
-            <p>Address:</p>
-            <span>Alexandria, VA 22305, USA</span>
+            <span>Arlington, VA</span>
+          </div>
+          <div class="contact-item">
+            <i class="fab fa-linkedin-in"></i>
+            <a href="https://linkedin.com/in/abdullah-al-muhit-5b4a89215" target="_blank" rel="noopener noreferrer">LinkedIn Profile</a>
+          </div>
         </div>
-        
+      </div>
+      <form class="contact-form glass-card" action="https://formspree.io/f/xbdayzev" method="POST">
+        <!-- TODO: Replace YOUR_FORM_ID with your Formspree ID (sign up free at formspree.io) -->
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required autocomplete="name" placeholder="Your name">
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required autocomplete="email" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" required placeholder="Your message..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-large">Send Message</button>
+      </form>
     </div>
-    <div class="map">
-        <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.8354345097314!2d-77.05063618468118!3d38.805109079578655!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89b7b2d585d7a7e1%3A0x2f616cd8ec2874d9!2sAlexandria%2C%20VA%2022305%2C%20USA!5e0!3m2!1sen!2sus!4v1688827583408!5m2!1sen!2sus" 
-            width="300" 
-            height="450" 
-            style="border:0;" 
-            allowfullscreen="" 
-            loading="lazy">
-        </iframe>
-    </div>
-</section>
+  </section>
 
-  <footer>
-    <p>&copy; 2025 Abdullah Al Muhit. All rights reserved.</p>
-   
+  </main>
+
+  <!-- Footer -->
+  <footer role="contentinfo">
+    <div class="footer-social">
+      <a href="https://github.com/muhit009" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
+      <a href="https://linkedin.com/in/abdullah-al-muhit-5b4a89215" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+      <a href="https://www.facebook.com/muhit009/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+    </div>
+    <p class="footer-credit">Designed & Built by Abdullah Al Muhit</p>
+    <p class="footer-copy">&copy; 2025 Abdullah Al Muhit</p>
   </footer>
 
-
   <script>
-    new Typed('#typed-output', {
-      strings: ["Hi, I'm Abdullah Al Muhit"],
-      typeSpeed: 50,
-      backSpeed: 30,
-      loop: true,
+    // --- Loading screen ---
+    window.addEventListener('load', () => {
+      const loader = document.getElementById('loader');
+      loader.classList.add('loader-hidden');
+      loader.addEventListener('transitionend', () => loader.remove());
+    });
+
+    // --- Custom cursor ---
+    const cursorDot = document.getElementById('cursorDot');
+    const cursorRing = document.getElementById('cursorRing');
+    let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursorDot.style.transform = `translate(${mouseX - 4}px, ${mouseY - 4}px)`;
+    });
+
+    function animateRing() {
+      ringX += (mouseX - ringX) * 0.15;
+      ringY += (mouseY - ringY) * 0.15;
+      cursorRing.style.transform = `translate(${ringX - 20}px, ${ringY - 20}px)`;
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    document.querySelectorAll('a, button, .btn, .project-card, .skill-card, .timeline-card, .featured-project, input, textarea').forEach(el => {
+      el.addEventListener('mouseenter', () => cursorRing.classList.add('cursor-hover'));
+      el.addEventListener('mouseleave', () => cursorRing.classList.remove('cursor-hover'));
+    });
+
+    // --- Scroll progress bar ---
+    window.addEventListener('scroll', () => {
+      const scrollTop = document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const progress = (scrollTop / docHeight) * 100;
+      document.getElementById('scrollProgress').style.width = progress + '%';
+    });
+
+    // --- Navbar scroll effect ---
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // --- Mobile menu toggle ---
+    const burger = document.getElementById('burger');
+    const navLinks = document.getElementById('navLinks');
+    burger.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('active');
+      burger.classList.toggle('active');
+      burger.setAttribute('aria-expanded', isOpen);
+    });
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        burger.classList.remove('active');
+        burger.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // --- Dark/Light mode toggle ---
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const html = document.documentElement;
+
+    function setTheme(theme) {
+      html.setAttribute('data-theme', theme);
+      themeIcon.className = theme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+      localStorage.setItem('theme', theme);
+    }
+
+    themeToggle.addEventListener('click', () => {
+      setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    });
+
+    setTheme(localStorage.getItem('theme') || 'dark');
+
+    // --- Scroll reveal ---
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // --- Proficiency bars animation ---
+    const barObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.proficiency-bar').forEach(bar => {
+            bar.style.width = bar.dataset.width + '%';
+          });
+          barObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    document.querySelectorAll('.proficiency-section').forEach(el => barObserver.observe(el));
+
+    // --- Smooth scroll ---
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // --- Stats count-up ---
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseFloat(el.dataset.target);
+          const decimals = parseInt(el.dataset.decimals) || 0;
+          const duration = 2000;
+          const start = performance.now();
+          function animate(now) {
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = decimals > 0 ? (eased * target).toFixed(decimals) : Math.floor(eased * target);
+            if (progress < 1) requestAnimationFrame(animate);
+          }
+          requestAnimationFrame(animate);
+          statsObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.stat-number').forEach(el => statsObserver.observe(el));
+
+    // --- Project Detail Modal ---
+    const projectData = {
+      medgemma: {
+        title: 'MedGemma Clinical Suite',
+        label: 'Featured Project',
+        desc: 'Full-stack medical AI platform with FastAPI backend, patient management, vital signs tracking, and AI-powered imaging analysis using fine-tuned MedGemma 1.5 with 87% accuracy on 5K+ images.',
+        arch: 'FastAPI backend with Supabase (PostgreSQL) for data persistence. JWT-based authentication with role-based access control. TensorFlow Serving for model inference. RESTful API design with async endpoints for image processing.',
+        challenges: 'Fine-tuning a multimodal medical model required careful data preprocessing and augmentation. Handling large medical images efficiently while maintaining low API response times. Implementing HIPAA-aware data handling patterns.',
+        outcomes: '87% diagnostic accuracy on 5K+ medical images. Sub-2s API response time for image analysis. Complete patient management workflow with vital signs tracking.',
+        tags: ['FastAPI', 'Supabase', 'TensorFlow', 'PostgreSQL', 'JWT'],
+        github: 'https://github.com/muhit009/MS-MedGemmaTI'
+      },
+      loganalyzer: {
+        title: 'Intelligent Log Analyzer',
+        label: 'Featured Project',
+        desc: 'Production-grade AI-powered log analysis system handling 10K+ entries/day with ML anomaly detection, LLM root cause analysis, and Redis caching reducing query latency by 60%.',
+        arch: 'FastAPI microservice architecture with PostgreSQL for log storage. Redis for caching frequently accessed queries and ML model predictions. Docker containerized deployment. LLM APIs integrated for root cause analysis generation.',
+        challenges: 'Processing 10K+ log entries daily with real-time anomaly detection required careful optimization of the ML pipeline. Balancing accuracy vs. speed for anomaly detection. Designing an effective caching strategy for varied query patterns.',
+        outcomes: '60% reduction in query latency through Redis caching. Real-time anomaly detection on 10K+ daily entries. Automated root cause analysis reducing mean-time-to-resolution.',
+        tags: ['FastAPI', 'PostgreSQL', 'Docker', 'Redis', 'LLM APIs'],
+        github: 'https://github.com/muhit009/Intelligent-log-analyzer-Incident-Assistant'
+      },
+      deepfake: {
+        title: 'Deepfake Speech Detection',
+        label: 'Research Project',
+        desc: 'RawNet2-based deepfake detection achieving 94% accuracy on ASVspoof 2019 dataset with 100K+ audio samples, plus LLM-powered explainability pipeline.',
+        arch: 'PyTorch-based RawNet2 model trained on ASVspoof 2019 LA partition. Custom data augmentation pipeline with generator-guided synthetic samples. LLM integration for generating human-readable explanations of classification decisions.',
+        challenges: 'Handling class imbalance in the ASVspoof dataset. Designing effective audio feature representations that generalize across different spoofing methods. Building an explainability pipeline that produces meaningful, non-technical explanations.',
+        outcomes: '94% accuracy on ASVspoof 2019 dataset. Explainability pipeline covering 1000+ classification decisions. Research contribution to the field of audio deepfake detection.',
+        tags: ['Python', 'PyTorch', 'RawNet2', 'ASVspoof'],
+        github: 'https://github.com/muhit009/Generator-Guided-Synthetic-Speech-for-Robust-Deepfake-Detection'
+      },
+      tajahatecom: {
+        title: 'TajahatEcom Backend',
+        label: 'Full-Stack Project',
+        desc: 'Scalable e-commerce REST API for a fresh produce marketplace with 10 normalized tables, Celery async task queue improving checkout by 35%, and real-time inventory analytics dashboard.',
+        arch: 'Django REST Framework with PostgreSQL. 10 normalized database tables with complex relationships. Celery with Redis broker for async order processing and email notifications. Real-time inventory tracking with analytics dashboard.',
+        challenges: 'Designing a normalized schema that supports complex e-commerce workflows (cart, checkout, inventory, orders) without performance issues. Implementing async checkout flow while ensuring data consistency.',
+        outcomes: '35% improvement in checkout flow through async task processing. 10 normalized tables supporting full e-commerce lifecycle. Real-time inventory analytics dashboard.',
+        tags: ['Django REST', 'PostgreSQL', 'Celery', 'Redis'],
+        github: 'https://github.com/muhit009/TajahatEcom'
+      },
+      ibm: {
+        title: 'IBM Telco Churn Analysis',
+        label: 'Data Science Project',
+        desc: 'End-to-end customer churn analysis on IBM Telco data with advanced EDA, feature engineering, and predictive modeling using multiple ML algorithms.',
+        arch: 'Jupyter notebook-based analysis pipeline. Pandas for data wrangling and feature engineering. Scikit-Learn for model training with multiple algorithms (Random Forest, XGBoost, Logistic Regression). Matplotlib/Seaborn for comprehensive EDA visualizations.',
+        challenges: 'Handling missing values and categorical encoding for mixed data types. Feature selection to identify the most predictive churn indicators. Comparing and selecting the best model across multiple evaluation metrics.',
+        outcomes: 'Comprehensive EDA revealing key churn drivers. Multiple trained models with cross-validated performance metrics. Actionable insights for customer retention strategies.',
+        tags: ['Python', 'Pandas', 'Scikit-Learn', 'EDA'],
+        github: 'https://github.com/muhit009/Ibm-dataset-analysis-and-predictions'
+      },
+      imdb: {
+        title: 'IMDB Movie Visualization & ML',
+        label: 'Data Visualization Project',
+        desc: 'Interactive Dash dashboard analyzing IMDB movies by genre with regression, classification, and clustering models for rating predictions on Kaggle dataset.',
+        arch: 'Plotly Dash for interactive web dashboard. Multiple ML models: regression for rating prediction, classification for genre categorization, clustering for movie similarity grouping. Kaggle IMDB dataset with comprehensive preprocessing.',
+        challenges: 'Building an interactive dashboard that handles multiple visualization types and ML model outputs simultaneously. Designing intuitive filtering and exploration UX for movie data.',
+        outcomes: 'Interactive dashboard with real-time filtering across genres and years. Three types of ML models deployed within the dashboard. Comprehensive data visualizations for movie trends.',
+        tags: ['Python', 'Dash', 'Plotly', 'ML'],
+        github: 'https://github.com/muhit009/Movie_Information-Visualization-and-Machine-Learning'
+      }
+    };
+
+    const modal = document.getElementById('projectModal');
+    const modalClose = modal.querySelector('.modal-close');
+
+    function openModal(key) {
+      const d = projectData[key];
+      if (!d) return;
+      document.getElementById('modalLabel').textContent = d.label;
+      document.getElementById('modalTitle').textContent = d.title;
+      document.getElementById('modalDesc').textContent = d.desc;
+      document.getElementById('modalArch').textContent = d.arch;
+      document.getElementById('modalChallenges').textContent = d.challenges;
+      document.getElementById('modalOutcomes').textContent = d.outcomes;
+      document.getElementById('modalTags').innerHTML = d.tags.map(t => `<span>${t}</span>`).join('');
+      document.getElementById('modalLinks').innerHTML = `<a href="${d.github}" target="_blank" rel="noopener noreferrer" class="btn btn-outline">View on GitHub <i class="fab fa-github"></i></a>`;
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      modalClose.focus();
+    }
+
+    function closeModal() {
+      modal.hidden = true;
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('[data-modal]').forEach(el => {
+      el.addEventListener('click', () => openModal(el.dataset.modal));
+      el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(el.dataset.modal); } });
+    });
+
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.hidden) closeModal(); });
+
+    // --- Keyboard focus trap in modal ---
+    modal.addEventListener('keydown', (e) => {
+      if (e.key !== 'Tab') return;
+      const focusable = modal.querySelectorAll('button, a[href], [tabindex]:not([tabindex="-1"])');
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
     });
   </script>
 
-  
 </body>
 </html>
