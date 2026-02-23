@@ -182,12 +182,12 @@
         <span class="stat-label">Production Projects</span>
       </div>
       <div class="stat-item glass-card">
-        <span class="stat-number" data-target="87">0</span><span class="stat-plus">%</span>
-        <span class="stat-label">Model Accuracy</span>
+        <span class="stat-number" data-target="44">0</span><span class="stat-plus">%</span>
+        <span class="stat-label">MedGemma-TI Accuracy</span>
       </div>
       <div class="stat-item glass-card">
-        <span class="stat-number" data-target="50">0</span><span class="stat-plus">K+</span>
-        <span class="stat-label">Data Points</span>
+        <span class="stat-number" data-target="57">0</span><span class="stat-plus">K+</span>
+        <span class="stat-label">Training Pairs</span>
       </div>
       <div class="stat-item glass-card">
         <span class="stat-number" data-target="3.63" data-decimals="2">0</span>
@@ -336,12 +336,13 @@
       <div class="featured-content">
         <p class="featured-label">Featured Project</p>
         <h3>MedGemma Clinical Suite</h3>
-        <p class="featured-description">Full-stack medical AI platform with FastAPI backend, patient management, vital signs tracking, and AI-powered imaging analysis using fine-tuned MedGemma 1.5 with 87% accuracy on 5K+ images.</p>
+        <p class="featured-description">Full-stack medical AI platform for temporal chest X-ray progression assessment. Powered by <strong>MedGemma-TI</strong> — our QLoRA-fine-tuned model (published on Hugging Face) trained on 57K+ pairs, achieving 44% accuracy (+20pp over base) and 54.8% worsening recall on 17,802 test samples. Built in collaboration with <a href="https://www.linkedin.com/in/muhammad-shehryar-khan-883103214/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" style="color:var(--accent);">Shehryar Khan</a>.</p>
         <div class="project-tags">
           <span>FastAPI</span><span>Supabase</span><span>TensorFlow</span><span>PostgreSQL</span><span>JWT</span>
         </div>
         <div class="project-links">
           <a href="https://github.com/muhit009/MS-MedGemmaTI" target="_blank" rel="noopener noreferrer" class="project-icon" aria-label="GitHub" onclick="event.stopPropagation()"><i class="fab fa-github"></i></a>
+          <a href="https://huggingface.co/sh3hryarkhan/MedGemma-TI" target="_blank" rel="noopener noreferrer" class="project-icon" aria-label="Hugging Face Model" onclick="event.stopPropagation()" title="MedGemma-TI on Hugging Face" style="font-size:1.1rem;">&#129303;</a>
           <span class="modal-hint"><i class="fas fa-expand-alt"></i> Click for details</span>
         </div>
       </div>
@@ -471,7 +472,7 @@
         <div class="pub-content">
           <h3>MedGemma: Fine-Tuning Multimodal Models for Clinical Image Analysis</h3>
           <p class="pub-authors">Abdullah Al Muhit — Virginia Tech, 2025</p>
-          <p class="pub-desc">Technical report on fine-tuning Google's MedGemma 1.5 for medical image classification with a full-stack clinical platform, achieving 87% diagnostic accuracy on 5K+ medical images.</p>
+          <p class="pub-desc">Technical report on QLoRA fine-tuning of Google's MedGemma-4B-IT for temporal chest X-ray progression assessment, trained on 57,283 pairs from CheXpert and RICORD-1C, achieving 44% accuracy (+20.3pp over base) and 54.8% worsening recall on 17,802 test samples.</p>
           <div class="pub-tags">
             <span>Medical AI</span><span>Computer Vision</span><span>Transfer Learning</span>
           </div>
@@ -766,12 +767,13 @@
       medgemma: {
         title: 'MedGemma Clinical Suite',
         label: 'Featured Project',
-        desc: 'Full-stack medical AI platform with FastAPI backend, patient management, vital signs tracking, and AI-powered imaging analysis using fine-tuned MedGemma 1.5 with 87% accuracy on 5K+ images.',
-        arch: 'FastAPI backend with Supabase (PostgreSQL) for data persistence. JWT-based authentication with role-based access control. TensorFlow Serving for model inference. RESTful API design with async endpoints for image processing.',
-        challenges: 'Fine-tuning a multimodal medical model required careful data preprocessing and augmentation. Handling large medical images efficiently while maintaining low API response times. Implementing HIPAA-aware data handling patterns.',
-        outcomes: '87% diagnostic accuracy on 5K+ medical images. Sub-2s API response time for image analysis. Complete patient management workflow with vital signs tracking.',
-        tags: ['FastAPI', 'Supabase', 'TensorFlow', 'PostgreSQL', 'JWT'],
-        github: 'https://github.com/muhit009/MS-MedGemmaTI'
+        desc: 'Full-stack medical AI platform for temporal chest X-ray progression assessment. Powered by MedGemma-TI — our QLoRA adapter (google/medgemma-4b-it, r=16) trained on 57,283 CheXpert + RICORD-1C temporal pairs. Outputs IMPROVED / STABLE / WORSENED / MIXED with structured radiology-style reports. Built with Shehryar Khan; both co-authors on the Hugging Face model card.',
+        arch: 'FastAPI backend with Supabase (PostgreSQL + Storage) for data persistence and image deduplication via SHA-256. JWT auth (HS256 + bcrypt). MedGemma-TI served via RunPod Serverless or local GPU (<4 GB VRAM with 4-bit NF4 QLoRA). Next.js 16 / React 19 dual-pane clinical dashboard with SSE token streaming. Trained on Virginia Tech ARC multi-GPU cluster (torchrun).',
+        challenges: 'Designing the flip test (temporal coherence evaluation) to verify genuine visual reasoning rather than text-pattern exploitation. Managing class imbalance across IMPROVED/STABLE/WORSENED/MIXED — IMPROVED class required 1.61× upsampling. Fitting multi-image inference of a 4B-parameter VLM into GPU memory budgets. Token-level SSE streaming across model server → FastAPI → Next.js.',
+        outcomes: '44% accuracy on 17,802 test samples (+20.3pp over base MedGemma\'s 23.7%). Macro F1: 0.343 (2.45× improvement). Worsening recall: 54.8% (+22pp) — the critical clinical metric. Temporal coherence: 26.4% (19.7× over base). Model published publicly on Hugging Face.',
+        tags: ['FastAPI', 'QLoRA', 'MedGemma-TI', 'Supabase', 'Next.js', 'PyTorch', 'Hugging Face'],
+        github: 'https://github.com/muhit009/MS-MedGemmaTI',
+        huggingface: 'https://huggingface.co/sh3hryarkhan/MedGemma-TI'
       },
       loganalyzer: {
         title: 'Intelligent Log Analyzer',
@@ -838,7 +840,8 @@
       document.getElementById('modalChallenges').textContent = d.challenges;
       document.getElementById('modalOutcomes').textContent = d.outcomes;
       document.getElementById('modalTags').innerHTML = d.tags.map(t => `<span>${t}</span>`).join('');
-      document.getElementById('modalLinks').innerHTML = `<a href="${d.github}" target="_blank" rel="noopener noreferrer" class="btn btn-outline">View on GitHub <i class="fab fa-github"></i></a>`;
+      const hfBtn = d.huggingface ? `<a href="${d.huggingface}" target="_blank" rel="noopener noreferrer" class="btn btn-outline">&#129303; MedGemma-TI on Hugging Face</a>` : '';
+      document.getElementById('modalLinks').innerHTML = `<a href="${d.github}" target="_blank" rel="noopener noreferrer" class="btn btn-outline">View on GitHub <i class="fab fa-github"></i></a>${hfBtn}`;
       modal.hidden = false;
       document.body.style.overflow = 'hidden';
       modalClose.focus();

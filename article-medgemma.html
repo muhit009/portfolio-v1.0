@@ -196,7 +196,7 @@
 
   <div class="article-meta">PROJECT DEEP DIVE &mdash; 2025</div>
   <h1 class="article-title">Building a Production Medical AI Platform with FastAPI</h1>
-  <p class="article-subtitle">How I designed and built MedGemma Clinical Suite — a full-stack platform that lets physicians analyze temporal chest X-rays with AI-powered diagnostic assistance using a fine-tuned MedGemma model.</p>
+  <p class="article-subtitle">How we designed and built MedGemma Clinical Suite — a full-stack platform for temporal chest X-ray progression assessment powered by <strong>MedGemma-TI</strong>, our QLoRA-fine-tuned model that classifies interval change as IMPROVED, STABLE, WORSENED, or MIXED, published on Hugging Face.</p>
 
   <div class="article-tags">
     <span>FastAPI</span>
@@ -206,6 +206,7 @@
     <span>PostgreSQL</span>
     <span>LoRA</span>
     <span>Docker</span>
+    <span>Hugging Face</span>
   </div>
 
   <div class="article-body">
@@ -234,7 +235,82 @@ Backend (FastAPI / Python)
     <p>The FastAPI backend handles patient management, clinical data CRUD, imaging workflows, and AI orchestration. Authentication uses JWT (HS256) with <code>bcrypt</code> password hashing. Every AI conversation is persisted to Supabase for a complete audit trail — critical for any healthcare application.</p>
 
     <h3>AI/ML Layer</h3>
-    <p>The core of the system is Google's <code>MedGemma-4B-IT</code> model, fine-tuned with a custom LoRA adapter (<code>MedGemma-TI</code>) for temporal chest X-ray analysis. I used <strong>4-bit quantization (nf4)</strong> via bitsandbytes to reduce the memory footprint from ~11GB to ~4GB, making it deployable on consumer GPUs (RTX 3060 Ti 8GB minimum).</p>
+    <p>The core of the system is our custom fine-tuned model <strong>MedGemma-TI</strong> — a QLoRA adapter built on top of Google's <code>MedGemma-4B-IT</code>. Given chronologically ordered chest X-rays, the model performs <strong>temporal progression assessment</strong> and outputs a structured radiology-style report concluding with one of four assessments: <strong>IMPROVED</strong>, <strong>STABLE</strong>, <strong>WORSENED</strong>, or <strong>MIXED</strong>. With 4-bit quantization the adapter runs in under <strong>4 GB of VRAM</strong>, and was trained on the <strong>Virginia Tech ARC multi-GPU cluster</strong>.</p>
+
+    <h3>Our Fine-Tuned Model: MedGemma-TI</h3>
+    <p><strong>MedGemma-TI</strong> is a QLoRA adapter trained to teach temporal reasoning to a medical vision-language model. Rather than describing a single image in isolation, the model compares a <em>prior</em> study against a <em>current</em> study and reasons about what has changed — mimicking how radiologists actually read serial imaging.</p>
+
+    <h3 style="margin-top:20px;">Task & Output</h3>
+    <p>The model receives two or more chronologically ordered chest X-rays plus structured patient context (age, sex, clinical alerts, notes, prior radiology reads) and outputs a structured report:</p>
+    <pre style="font-size:0.78rem;">PRIOR:    [findings from baseline study]
+CURRENT:  [findings from current study]
+CHANGES:  [bulleted interval changes]
+IMPRESSION: IMPROVED | STABLE | WORSENED | MIXED</pre>
+
+    <h3 style="margin-top:20px;">Training Data</h3>
+    <p>We assembled <strong>57,283 temporal pairs</strong> from two sources, with patient-level splits ensuring <strong>zero cross-split leakage</strong>:</p>
+    <ul>
+      <li><strong>CheXpert (Stanford ML Group):</strong> ~56,320 temporal pairs — effusion, pneumonia, cardiomegaly, nodules, atelectasis</li>
+      <li><strong>RICORD-1C (RSNA/TCIA):</strong> 963 examples (321 pairs × 3 augmentations) — COVID-19 ICU, viral pneumonia, ARDS</li>
+      <li><strong>Test set:</strong> 17,802 held-out samples (17,679 CheXpert + 123 RICORD)</li>
+      <li><strong>Class balancing:</strong> IMPROVED class upsampled 1.61× during training to correct underrepresentation</li>
+    </ul>
+
+    <h3 style="margin-top:20px;">Performance vs. Base Model</h3>
+    <div style="overflow-x:auto;margin-bottom:18px;">
+      <table style="width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:0.78rem;color:var(--text-secondary);">
+        <thead>
+          <tr style="border-bottom:1px solid var(--border-color);color:var(--accent);">
+            <th style="padding:8px 12px;text-align:left;">Metric</th>
+            <th style="padding:8px 12px;text-align:center;">Base MedGemma</th>
+            <th style="padding:8px 12px;text-align:center;">MedGemma-TI</th>
+            <th style="padding:8px 12px;text-align:center;">Gain</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border-color);">
+            <td style="padding:8px 12px;">Accuracy (17,802 samples)</td>
+            <td style="padding:8px 12px;text-align:center;">23.7%</td>
+            <td style="padding:8px 12px;text-align:center;color:var(--text-primary);font-weight:600;">44.0%</td>
+            <td style="padding:8px 12px;text-align:center;">+20.3 pp</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border-color);">
+            <td style="padding:8px 12px;">Macro F1</td>
+            <td style="padding:8px 12px;text-align:center;">0.140</td>
+            <td style="padding:8px 12px;text-align:center;color:var(--text-primary);font-weight:600;">0.343</td>
+            <td style="padding:8px 12px;text-align:center;">2.45×</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border-color);">
+            <td style="padding:8px 12px;">Worsening Recall <span style="font-size:0.7rem;opacity:0.7;">(clinical priority)</span></td>
+            <td style="padding:8px 12px;text-align:center;">32.8%</td>
+            <td style="padding:8px 12px;text-align:center;color:var(--text-primary);font-weight:600;">54.8%</td>
+            <td style="padding:8px 12px;text-align:center;">+22.0 pp</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;">Temporal Coherence (flip test)</td>
+            <td style="padding:8px 12px;text-align:center;">1.3%</td>
+            <td style="padding:8px 12px;text-align:center;color:var(--text-primary);font-weight:600;">26.4%</td>
+            <td style="padding:8px 12px;text-align:center;">19.7×</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:0.82rem;"><strong>Note on Worsening Recall:</strong> In clinical practice, missing a deterioration is the highest-risk error. The 54.8% worsening recall is therefore the primary clinical metric — not overall accuracy.</p>
+
+    <h3 style="margin-top:20px;">Technical Specifications</h3>
+    <ul>
+      <li><strong>Base model:</strong> <code>google/medgemma-4b-it</code></li>
+      <li><strong>Method:</strong> QLoRA — LoRA r=16, α=16, targeting all linear layers + <code>lm_head</code> + <code>embed_tokens</code></li>
+      <li><strong>Adapter size:</strong> ~2.6 GB</li>
+      <li><strong>Inference VRAM:</strong> &lt;4 GB (with 4-bit quantization)</li>
+      <li><strong>Training:</strong> 4 epochs, lr=2e-4 with 5% warmup, gradient clip 0.3, response-only cross-entropy</li>
+      <li><strong>Hardware:</strong> Virginia Tech ARC cluster (multi-GPU, <code>torchrun</code>)</li>
+      <li><strong>Published on:</strong> <a href="https://huggingface.co/sh3hryarkhan/MedGemma-TI" target="_blank" rel="noopener noreferrer" style="color:var(--accent);">Hugging Face — sh3hryarkhan/MedGemma-TI</a></li>
+    </ul>
+
+    <div class="callout">
+      <p>The model is publicly available at <a href="https://huggingface.co/sh3hryarkhan/MedGemma-TI" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:600;">sh3hryarkhan/MedGemma-TI</a>. Load it with <code>transformers</code> + <code>peft</code> — use <code>AutoModelForImageTextToText</code> (not <code>AutoModelForCausalLM</code>) to preserve the vision encoder.</p>
+    </div>
 
     <h2>Key Technical Decisions</h2>
 
@@ -261,26 +337,64 @@ Backend (FastAPI / Python)
 
     <h2>Challenges</h2>
     <ul>
-      <li><strong>Memory constraints:</strong> Getting a 4B-parameter vision-language model to run efficiently required careful quantization tuning and warm-up generation on startup to catch load issues early.</li>
-      <li><strong>Image handling:</strong> Medical images come in various formats (DICOM, PNG, JPEG). I used <code>pydicom</code> and <code>Pillow</code> for format normalization, with Supabase Storage providing signed URLs for secure access.</li>
+      <li><strong>Dataset construction &amp; class imbalance:</strong> Building 57,283 temporal pairs from CheXpert and RICORD-1C required careful patient-level splitting to prevent leakage. The IMPROVED class was underrepresented, so we upsampled it 1.61× in training to avoid the model defaulting to STABLE predictions.</li>
+      <li><strong>Designing the flip test (temporal coherence):</strong> Standard accuracy metrics don't verify that a model is actually using visual information — a model that ignores the images entirely can still score well by reading text cues. We designed a novel evaluation that swaps the PRIOR and CURRENT images while updating metadata, measuring whether the model's prediction flips accordingly. Base MedGemma scored 1.3%; our fine-tuned model reached 26.4%.</li>
+      <li><strong>Memory constraints:</strong> Multi-image inference with a 4B-parameter vision-language model required careful quantization tuning (QLoRA + 4-bit NF4) to fit within the ARC cluster's GPU memory. We also implemented warm-up generation on startup to surface load issues before serving requests.</li>
+      <li><strong>Image handling:</strong> Medical images come in various formats (DICOM, PNG, JPEG). We used <code>pydicom</code> and <code>Pillow</code> for format normalization, with Supabase Storage providing signed URLs for secure access.</li>
       <li><strong>Streaming across layers:</strong> Getting token-level streaming from the model server through FastAPI to the Next.js frontend required thread-based background generation with a custom token iterator.</li>
+      <li><strong>MIXED class ambiguity:</strong> Cases showing simultaneous regional improvement and worsening are inherently harder to label consistently, contributing to the MIXED class's lower recall in evaluation.</li>
     </ul>
 
     <h2>Outcomes</h2>
     <ul>
-      <li>87% accuracy on 5K+ chest X-ray images for diagnostic analysis</li>
-      <li>Full clinical workflow: patient lookup, vitals review, imaging comparison, AI analysis — all in one interface</li>
+      <li><strong>44.0% accuracy</strong> on 17,802 held-out samples — a +20.3 percentage point improvement over the base MedGemma (23.7%)</li>
+      <li><strong>Macro F1 of 0.343</strong> vs. 0.140 for the base model — a 2.45× improvement across all four classes</li>
+      <li><strong>54.8% worsening recall</strong> — the clinically critical metric for catching patient deterioration, up from 32.8%</li>
+      <li><strong>26.4% temporal coherence</strong> (flip test) — 19.7× higher than base MedGemma, demonstrating genuine visual reasoning rather than text-pattern exploitation</li>
+      <li>Model published on <a href="https://huggingface.co/sh3hryarkhan/MedGemma-TI" target="_blank" rel="noopener noreferrer" style="color:var(--accent);">Hugging Face</a> as a public research artifact</li>
+      <li>Full clinical workflow: patient lookup, vitals review, temporal imaging comparison, AI analysis — all in one interface</li>
       <li>Complete audit trail of every AI interaction for compliance</li>
-      <li>Deployable on a single GPU pod or as a split architecture with serverless inference</li>
+      <li>Deployable in &lt;4 GB VRAM via QLoRA, on a single GPU pod or as serverless inference (RunPod)</li>
     </ul>
 
-    <h2>What I Learned</h2>
-    <p>Building MedGemma Clinical Suite taught me that the hardest part of medical AI isn't the model — it's the system around it. Secure authentication, data integrity, audit logging, and a workflow that physicians will actually use are what separate a notebook experiment from a production platform. The experience deepened my understanding of full-stack AI system design, from LoRA fine-tuning to real-time streaming architectures.</p>
+    <h2>Meet the Team</h2>
+    <p>MedGemma Clinical Suite is a joint research project between two engineers at <strong>Virginia Tech</strong>. We are co-authors on the model — from dataset pipeline and QLoRA fine-tuning to backend architecture and clinical platform design. The citation on Hugging Face lists both of us equally.</p>
+
+    <div style="display:flex;flex-direction:column;gap:16px;margin:24px 0 32px;">
+      <div class="callout" style="display:flex;align-items:flex-start;gap:16px;">
+        <div style="font-size:2rem;line-height:1;">&#128100;</div>
+        <div>
+          <strong style="color:var(--text-primary);font-size:1rem;">Abdullah Al Muhit</strong><br>
+          <span style="font-size:0.85rem;color:var(--accent);font-family:var(--font-mono);">Backend & ML Engineer &mdash; Virginia Tech MEng CS</span><br>
+          <span style="font-size:0.85rem;color:var(--text-secondary);">
+            <strong style="color:var(--text-primary);">ML:</strong> dataset curation &amp; temporal pair construction, evaluation framework design, temporal coherence (flip test) methodology, training pipeline on VT ARC cluster, per-class performance analysis.<br>
+            <strong style="color:var(--text-primary);">Platform:</strong> FastAPI backend, Supabase schema design, JWT authentication, SSE streaming inference pipeline, clinical API orchestration.
+          </span>
+        </div>
+      </div>
+      <div class="callout" style="display:flex;align-items:flex-start;gap:16px;">
+        <div style="font-size:2rem;line-height:1;">&#128100;</div>
+        <div>
+          <strong style="color:var(--text-primary);font-size:1rem;">
+            <a href="https://www.linkedin.com/in/muhammad-shehryar-khan-883103214/" target="_blank" rel="noopener noreferrer" style="color:var(--accent);text-decoration:none;">Shehryar Khan</a>
+          </strong><br>
+          <span style="font-size:0.85rem;color:var(--accent);font-family:var(--font-mono);">ML Engineer &mdash; Virginia Tech</span><br>
+          <span style="font-size:0.85rem;color:var(--text-secondary);">
+            <strong style="color:var(--text-primary);">ML:</strong> QLoRA adapter design (r=16, α=16), 4-bit NF4 quantization, model fine-tuning runs, hyperparameter tuning (lr, gradient clip, warmup), class imbalance handling (1.61× upsampling), and publishing <a href="https://huggingface.co/sh3hryarkhan/MedGemma-TI" target="_blank" rel="noopener noreferrer" style="color:var(--accent);">MedGemma-TI on Hugging Face</a>.<br>
+            <strong style="color:var(--text-primary);">Platform:</strong> Prompt engineering for structured temporal reports, multi-image inference pipeline, model server integration.
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <h2>What We Learned</h2>
+    <p>Building MedGemma Clinical Suite taught us that standard accuracy metrics can be deeply misleading in medical AI — a model that ignores images entirely can still score well by exploiting text cues. Designing the flip test to measure <em>genuine</em> visual reasoning was one of the most important methodological decisions we made. We also learned that class imbalance in medical datasets isn't just a training problem — it's a clinical safety problem (missing a deterioration is the highest-risk failure mode). The project deepened our understanding of full-stack AI system design: from QLoRA fine-tuning on multi-GPU clusters and publishing research models on Hugging Face, to building real-time streaming architectures and HIPAA-aware clinical workflows.</p>
 
   </div>
 
   <div class="article-footer">
     <a href="https://github.com/muhit009/MS-MedGemmaTI" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> View on GitHub</a>
+    <a href="https://huggingface.co/sh3hryarkhan/MedGemma-TI" target="_blank" rel="noopener noreferrer">&#129303; MedGemma-TI on Hugging Face</a>
     <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Portfolio</a>
   </div>
 </div>
